@@ -1,2 +1,2 @@
-# PFCosentino
-Proyecto Final - CoderHouse
+# Pre-Entrega1Cosentino
+Proyecto JavaScript - CoderHouse

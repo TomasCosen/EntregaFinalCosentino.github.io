@@ -1,2 +1,2 @@
-# Pre-Entrega1Cosentino
+# Pre-Entrega2Cosentino
 Proyecto JavaScript - CoderHouse

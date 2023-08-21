@@ -14,8 +14,14 @@
     </header>
 
     <main>
-        <input type="text" id="numero" placeholder="Ingresa un número">
-        <button id="enviar">Enviar</button>
+        <div id="contenedor"></div>
+        <input type="number" id="numero" placeholder="Ingresa un número">
+        <select id="opcionSelect">
+            <option value="producto">Producto</option>
+            <option value="servicio">Servicio</option>
+        </select>
+        <button id="boton">Calcular Impuestos</button>
+        <button id="logout">Cerrar Sesión</button>
         <h2>Historial de cálculos</h2>
         <ul id="historial"></ul>
         <img src="./peso-dolar.jpg" alt="Imagen ilustrativa" class="illustration">

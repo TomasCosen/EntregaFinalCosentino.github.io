@@ -1,3 +1,9 @@
+let usuario
+let usuarioStorage = localStorage.getItem("usuarioActual")
+const contenedor = document.getElementById("contenedor");
+const boton = document.getElementById("boton");
+const numeroInput = document.getElementById("numero");
+const opcionSelect = document.getElementById("opcionSelect");
 const suma = (a, b, c, d, e) => a + b + c + d + e;
 const iva = (x) => x * 0.21;
 const paisServ = (x) => x * 0.08;
@@ -5,7 +11,29 @@ const paisProd = (x) => x * 0.3;
 const regAfip = (x) => x * 0.45;
 const iibb = (x) => x * 0.02;
 
-// Valores comunes
+
+// inicio de sesión
+
+if(usuarioStorage){
+    nombre = usuarioStorage
+    alert(`Bienvenido nuevamente ${nombre}`)
+}else{
+    let nombre = prompt("Ingrese el usuario")
+    localStorage.setItem("usuarioActual", nombre)
+    alert("Hola, Bienvenido al calculador de impuestos al dólar")
+}
+
+// cierre de sesión
+
+const logout = document.getElementById("logout")
+
+logout.addEventListener("click", () => {
+    localStorage.removeItem("usuarioActual")
+    location.reload()
+    alert("Sesión cerrada, hasta luego!")
+})
+
+// lista de valores comunes
 const valoresComunes = [
     { valor: 100 },
     { valor: 200 },
@@ -16,44 +44,44 @@ const valoresComunes = [
     { valor: 10000 },
 ];
 
-alert("Hola, Bienvenido al calculador de impuestos al dólar");
 
-while (true) {
-    let valoresList = "Estos son algunos de los valores más comunes:\n";
-    
+// Renderizar "valores comunes" en el contenedor
+const renderizado = (valoresComunes) => {
+    contenedor.innerHTML = "";
+    let valoresList = "Estos son algunos de los valores más comunes: <br> ";
     valoresComunes.forEach((valorComun, index) => {
-        valoresList += `${index + 1}. ARS$ ${valorComun.valor}\n`;
+        valoresList += `${index + 1}. ARS$ ${valorComun.valor} <br>`;
     });
-    valoresList += "0. Ingresar valor manualmente\n";
+    valoresList += " ó Ingrese el valor manualmente<br>";
+    contenedor.innerHTML = valoresList;
+};
+renderizado(valoresComunes);
+
+// Función para seleccionar el valor del array
+const calcularImpuestos = (numero, opcionSelect) => {
+    let valor;
     
-    let seleccionIndex = parseInt(prompt(valoresList));
-
-    if (seleccionIndex >= 0 && seleccionIndex <= valoresComunes.length) {
-        let valor = seleccionIndex === 0 ? parseFloat(prompt("Ingrese el valor en pesos (al dolar oficial) que desea calcular:")) : valoresComunes[seleccionIndex - 1].valor;
-
-        if (isNaN(valor) && seleccionIndex === 0) {
-            alert("Ingrese un valor numérico válido.");
-        } else {
-            let opcion = prompt("Ingrese si se trata de un producto o un servicio");
-
-            if (opcion === "producto") {
-                let resultadoProd = suma(valor, regAfip(valor), paisProd(valor), 0, 0);
-                alert("El valor final en pesos para este producto es de: ARS$" + resultadoProd);
-            } else if (opcion === "servicio") {
-                let resultadoServ = suma(valor, regAfip(valor), paisServ(valor), iva(valor), iibb(valor));
-                alert("El valor final en pesos para el servicio es de: ARS$" + resultadoServ);
-            } else {
-                alert("Opción incorrecta");
-            }
-        }
+    // Validar y obtener el valor seleccionado
+    if (numero >= 0 && numero < valoresComunes.length) {
+        valor = valoresComunes[numero-1].valor;
     } else {
-        alert("Selección de valor incorrecta");
+        valor = numero;
     }
 
-    let reiniciar = prompt("¿Desea realizar otro cálculo? (Sí / No)").toLowerCase();
-    if (reiniciar !== "si") {
-        alert("¡Hasta luego!");
-        break;
-    }
-}
+    const opcion = opcionSelect.value;
 
+    // Calcular impuestos según la opción seleccionada
+    if (opcion === "producto") {
+        const resultadoProd = suma(valor, regAfip(valor), paisProd(valor), 0, 0);
+        alert("El valor final en pesos para este producto es de: ARS$" + resultadoProd);
+    } else {
+        const resultadoServ = suma(valor, regAfip(valor), paisServ(valor), iva(valor), iibb(valor));
+        alert("El valor final en pesos para el servicio es de: ARS$" + resultadoServ);
+    }
+};
+
+// Agregar evento al botón
+boton.addEventListener("click", () => {
+    const numero = parseInt(numeroInput.value); // Obtener el número ingresado
+    calcularImpuestos(numero, opcionSelect);
+});

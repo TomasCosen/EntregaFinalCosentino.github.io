@@ -1,12 +1,17 @@
 let usuario
 let usuarioStorage = localStorage.getItem("usuarioActual")
 let historialValores = [];
+const login = document.getElementById("login")
+const textlogin = document.getElementById("textlogin")
+const canlogin = document.getElementById("canlogin")
+const logout = document.getElementById("logout")
 const historialElement = document.getElementById("historial")
 const contenedor = document.getElementById("contenedor");
 const boton = document.getElementById("boton");
 const cleanHistory = document.getElementById("cleanHistory");
 const numeroInput = document.getElementById("numero");
 const opcionSelect = document.getElementById("opcionSelect");
+const result = document.getElementById("result")
 const suma = (a, b, c, d, e) => a + b + c + d + e;
 const iva = (x) => x * 0.21;
 const paisServ = (x) => x * 0.08;
@@ -37,12 +42,15 @@ const actualizarHistorial = () => {
 
 if(usuarioStorage){
     nombre = usuarioStorage
-    alert(`Bienvenido ${nombre}`)
+    canlogin.innerHTML = `Hola, ${nombre} bienvenido al calculador de impuestos al dolar.`
 }else{
-    let nombre = prompt("Ingrese el usuario")
-    localStorage.setItem("usuarioActual", nombre)
-    alert("Hola, Bienvenido al calculador de impuestos al dólar")
-    location.reload()
+    canlogin.innerHTML = `Inicie sesión para continuar: `
+    login.addEventListener("click", () => {
+        nombre = (textlogin.value);
+        localStorage.setItem("usuarioActual", nombre)
+        location.reload()
+    })
+    
 }
 const historialUsuario = localStorage.getItem(`${nombre}-historial`);
 if (historialUsuario) {
@@ -52,13 +60,11 @@ if (historialUsuario) {
 
 // cierre de sesión
 
-const logout = document.getElementById("logout")
 
 logout.addEventListener("click", () => {
     localStorage.removeItem("usuarioActual")
     localStorage.removeItem(`${nombre}-historial`)
     location.reload()
-    alert("Sesión cerrada, hasta luego!")
 })
 
 //borrado de historial
@@ -84,12 +90,12 @@ const calcularImpuestos = (numero, opcionSelect) => {
     let resultado
     if (opcion === "producto") {
         const resultadoProd = suma(valor, regAfip(valor), paisProd(valor), 0, 0);
-        alert("El valor final en pesos para este producto es de: ARS$" + resultadoProd);
+        result.innerHTML = `Resultado: ${resultadoProd}`
         historialValores.push(resultadoProd)
         
     } else {
         const resultadoServ = suma(valor, regAfip(valor), paisServ(valor), iva(valor), iibb(valor));
-        alert("El valor final en pesos para el servicio es de: ARS$" + resultadoServ);
+        result.innerHTML = `Resultado: ${resultadoServ}`
         historialValores.push(resultadoServ)
     }
     localStorage.setItem(`${nombre}-historial`, JSON.stringify(historialValores));

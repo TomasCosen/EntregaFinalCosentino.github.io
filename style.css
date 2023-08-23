@@ -56,5 +56,11 @@ body {
   .green {
     color: #00FF00;
   }
+  ul li{
+    list-style: none;
+  }
+  button:hover{
+    background-color: white;
+  }
   
   

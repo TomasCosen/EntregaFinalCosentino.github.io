@@ -11,32 +11,30 @@ body {
     background-color: #222;
     color: #fff;
     text-align: center;
-    padding: 1em 0;
+    padding: 1rem 0;
   }
   
   .title {
     font-size: 28px;
     font-weight: bold;
     margin: 0;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.5rem;
   }
   
   .description {
     margin: 0;
-    margin-bottom: 1em;
+    margin-bottom: 1rem;
   }
-  
-  .illustration {
-    max-width: 100%;
-    display: block;
-    margin: 0 auto;
-    margin-top: 1em;
+  .img{
+    width: 60%;
+    height: auto;
+    margin-bottom: 3rem;
   }
-  
+
   .footer {
     background-color: #333;
     color: #fff;
-    padding: 1em 0;
+    padding: 1rem 0;
     text-align: center;
   }
   
@@ -44,23 +42,9 @@ body {
     margin: 0;
     font-size: 14px;
   }
-  
-  .blue {
-    color: #00A0D0;
-  }
-  
-  .red {
-    color: #FF0000;
-  }
-  
-  .green {
-    color: #00FF00;
-  }
+
   ul li{
     list-style: none;
-  }
-  button:hover{
-    background-color: white;
   }
   
   

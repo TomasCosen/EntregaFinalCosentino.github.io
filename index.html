@@ -13,26 +13,37 @@
         <h1 class="title">Calculador de Impuestos al Dólar</h1>
         <p class="description">A continuación, podrás calcular los impuestos para diferentes valores en pesos.</p>
         <p class="description" id="canlogin">Inicie sesión para continuar: </p>
-        <input type="text" id="textlogin" placeholder="Ingrese el usuario">
-        <button id="login">Iniciar Sesión</button>
-        <button id="logout">Cerrar Sesión</button>
+        <input type="text" class="col-form-label" id="textlogin" placeholder="Ingrese el usuario">
+        <button id="login" class="btn btn-success">Iniciar Sesión</button>
+        <button id="logout" class="btn btn-danger">Cerrar Sesión</button>
     </header>
 
-    <main>
-        <div id="contenedor"></div>
-        <input type="number" id="numero" placeholder="Ingresa un número">
-        <select id="opcionSelect">
+    <main class="grid text-center">
+
+        <div class="fs-4">
+            <p id="valoresComunes"></p>
+        </div>
+
+        <div>
+            <input type="number" class="col-form-label" id="numero" placeholder="Ingresa un número">
+            <select id="opcionSelect" class="form-select-lg">
             <option value="producto">Producto</option>
             <option value="servicio">Servicio</option>
-        </select>
-        <button id="boton">Calcular Impuestos</button>
-        <button id="cleanHistory">Borrar historial</button>
-        <h3 id="result"></h3>
+            </select>
+            <button id="boton" class="btn btn-success">Calcular Impuestos</button>
+            <button id="cleanHistory" class="btn btn-danger">Borrar historial</button>
+            <h3 id="result"></h3>
+        </div>
+
+        <div class="fs-5">
+            <h2>Historial de cálculos</h2>
+            <ul id="historial"></ul>
+        </div>
         
-        <h2>Historial de cálculos</h2>
-        <ul id="historial"></ul>
+        <div class="container">
+            <img src="./peso-dolar.jpg" alt="Imagen ilustrativa" class="img">
+        </div>
         
-        <img src="./peso-dolar.jpg" alt="Imagen ilustrativa" class="illustration">
     </main>
 
     <footer class="footer">

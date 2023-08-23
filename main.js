@@ -42,8 +42,10 @@ const actualizarHistorial = () => {
 
 if(usuarioStorage){
     nombre = usuarioStorage
+    canlogin.classList.add("fs-5")
     canlogin.innerHTML = `Hola, ${nombre} bienvenido al calculador de impuestos al dolar.`
 }else{
+    canlogin.classList.add("fs-3")
     canlogin.innerHTML = `Inicie sesión para continuar: `
     login.addEventListener("click", () => {
         nombre = (textlogin.value);

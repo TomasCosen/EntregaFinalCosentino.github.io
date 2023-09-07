@@ -1,6 +1,8 @@
 let usuario
 let usuarioStorage = localStorage.getItem("usuarioActual")
 let historialValores = [];
+const apiKey = '8e8ae00ed5c723d73e33d410';
+const apiUrl = 'https://v6.exchangerate-api.com/v6/8e8ae00ed5c723d73e33d410/latest/USD';
 const login = document.getElementById("login")
 const textlogin = document.getElementById("textlogin")
 const canlogin = document.getElementById("canlogin")
@@ -9,7 +11,8 @@ const historialElement = document.getElementById("historial")
 const contenedor = document.getElementById("valoresComunes");
 const boton = document.getElementById("boton");
 const cleanHistory = document.getElementById("cleanHistory");
-const numeroInput = document.getElementById("numero");
+const dolarInput = document.getElementById("dolar");
+const numeroInput = document.getElementById("peso");
 const opcionSelect = document.getElementById("opcionSelect");
 const result = document.getElementById("result")
 const suma = (a, b, c, d, e) => a + b + c + d + e;
@@ -46,7 +49,7 @@ if(usuarioStorage){
     canlogin.innerHTML = `Hola, ${nombre} bienvenido al calculador de impuestos al dolar.`
 }else{
     canlogin.classList.add("fs-3")
-    canlogin.innerHTML = `Inicie sesión para continuar: `
+    canlogin.innerHTML = `<b>Inicie sesión para continuar: </b>`
     login.addEventListener("click", () => {
         nombre = (textlogin.value);
         localStorage.setItem("usuarioActual", nombre)
@@ -75,34 +78,59 @@ cleanHistory.addEventListener("click", () => {
     location.reload()
 })
 
+// funcion para obtener el valor del dolar oficial
+async function obtenerCotizacionDolar() {
+    try {
+        const response = await fetch(apiUrl, {
+            headers: {
+                'Authorization': `Bearer ${apiKey}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al obtener los datos de la API');
+        }
+
+        const data = await response.json();
+        const cotizacionARS = data.conversion_rates.ARS;
+        return cotizacionARS;
+    } catch (error) {
+        console.error('Ocurrió un error:', error);
+        return null;
+    }
+}
+
 // Función para seleccionar el valor del array y calcular los impuestos
-const calcularImpuestos = (numero, opcionSelect) => {
+const calcularImpuestos = async (numero, nDolar, opcionSelect) => {
     let valor;
-    
-    // Validar y obtener el valor seleccionado
-    if (numero > 0 && numero <= valoresComunes.length) {
-        valor = valoresComunes[numero-1].valor;
-    } else {
-        valor = numero;
+
+    if (numero) {
+        if (numero > 0 && numero <= valoresComunes.length) {
+            valor = valoresComunes[numero - 1].valor;
+        } else {
+            valor = numero;
+        }
+    } else if (nDolar) {
+        const cotizacionARS = await obtenerCotizacionDolar();
+        if (cotizacionARS !== null) {
+            valor = cotizacionARS * nDolar;
+        }
     }
 
     const opcion = opcionSelect.value;
 
-    // Calcular impuestos según la opción seleccionada
-    let resultado
     if (opcion === "producto") {
         const resultadoProd = suma(valor, regAfip(valor), paisProd(valor), 0, 0);
-        result.innerHTML = `Resultado: ${resultadoProd}`
-        historialValores.push(resultadoProd)
-        
+        result.innerHTML = `Resultado: ${resultadoProd}`;
+        historialValores.push(resultadoProd);
     } else {
         const resultadoServ = suma(valor, regAfip(valor), paisServ(valor), iva(valor), iibb(valor));
-        result.innerHTML = `Resultado: ${resultadoServ}`
-        historialValores.push(resultadoServ)
+        result.innerHTML = `Resultado: ${resultadoServ}`;
+        historialValores.push(resultadoServ);
     }
+    
     localStorage.setItem(`${nombre}-historial`, JSON.stringify(historialValores));
-    actualizarHistorial()
-
+    actualizarHistorial();
 };
 
 // Renderizar "valores comunes" en el contenedor
@@ -112,14 +140,15 @@ const renderizado = (valoresComunes) => {
     valoresComunes.forEach((valorComun, index) => {
         valoresList += `${index + 1}. ARS$ ${valorComun.valor} <br>`;
     });
-    valoresList += " ó Ingrese el valor manualmente<br>";
+    valoresList += " ó Ingrese el valor manualmente (puede ingresar el valor en pesos ó dolares)<br>";
     contenedor.innerHTML = valoresList;
 };
 
 renderizado(valoresComunes);
 
 boton.addEventListener("click", () => {
-    const numero = parseInt(numeroInput.value); // Obtener el número ingresado
-    calcularImpuestos(numero, opcionSelect);
+    const nDolar = parseInt(dolarInput.value); // Obtener el número en dolares
+    const numero = parseInt(numeroInput.value); // Obtener el número en pesos
+    calcularImpuestos(numero, nDolar, opcionSelect);
     actualizarHistorial()
 });

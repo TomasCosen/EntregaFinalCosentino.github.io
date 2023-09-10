@@ -1,2 +1,2 @@
-# Pre-Entrega3Cosentino
+# Entrega final - Cosentino
 Proyecto JavaScript - CoderHouse

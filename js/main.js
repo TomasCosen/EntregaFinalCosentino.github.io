@@ -66,7 +66,7 @@ if (historialUsuario) {
     actualizarHistorial()
 }
 
-// cierre de sesión
+
 
 
 logout.addEventListener("click", () => {
@@ -75,13 +75,15 @@ logout.addEventListener("click", () => {
     location.reload()
 })
 
-//borrado de historial
+
+
 cleanHistory.addEventListener("click", () => {
     localStorage.removeItem(`${nombre}-historial`)
     location.reload()
 })
 
-// funcion para obtener el valor del dolar oficial
+
+
 async function obtenerCotizacionDolar() {
     try {
         const response = await fetch(apiUrl, {
@@ -103,7 +105,8 @@ async function obtenerCotizacionDolar() {
     }
 }
 
-// Función para seleccionar el valor del array y calcular los impuestos
+
+
 const calcularImpuestos = async (numero, nDolar, opcionSelect) => {
     let valor;
 
@@ -150,8 +153,8 @@ const renderizado = (valoresComunes) => {
 renderizado(valoresComunes);
 
 boton.addEventListener("click", () => {
-    const nDolar = parseInt(dolarInput.value); // Obtener el número en dolares
-    const numero = parseInt(numeroInput.value); // Obtener el número en pesos
+    const nDolar = parseInt(dolarInput.value);
+    const numero = parseInt(numeroInput.value); 
     calcularImpuestos(numero, nDolar, opcionSelect);
     actualizarHistorial()
     borrarInput(dolarInput)

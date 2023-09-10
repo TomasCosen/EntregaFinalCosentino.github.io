@@ -40,6 +40,9 @@ const actualizarHistorial = () => {
         historialElement.appendChild(listItem);
     });
 };
+function borrarInput(x) {
+    x.value = ""
+}
 
 // inicio de sesión
 
@@ -151,4 +154,6 @@ boton.addEventListener("click", () => {
     const numero = parseInt(numeroInput.value); // Obtener el número en pesos
     calcularImpuestos(numero, nDolar, opcionSelect);
     actualizarHistorial()
+    borrarInput(dolarInput)
+    borrarInput(numeroInput)
 });

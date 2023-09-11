@@ -146,7 +146,7 @@ const renderizado = (valoresComunes) => {
     valoresComunes.forEach((valorComun, index) => {
         valoresList += `${index + 1}. ARS$ ${valorComun.valor} <br>`;
     });
-    valoresList += " ó Ingrese el valor manualmente (puede ingresar el valor en pesos ó dolares)<br>";
+    valoresList += "Ingrese el número de los 'valores más comunes' en la casilla de pesos ó ingrese el valor en dólares <br>";
     contenedor.innerHTML = valoresList;
 };
 
